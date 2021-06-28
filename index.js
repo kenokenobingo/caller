@@ -6,11 +6,6 @@ const fs = require("fs");
 var mqtt = require("mqtt");
 
 let web3 = new Web3(Web3.givenProvider || process.env.INFURA_PATH);
-var client = mqtt.connect(process.env.MQTT_HOST, {
-  port: 1883,
-  username: process.env.MQTT_USERNAME,
-  password: process.env.MQTT_PASSWORD,
-});
 
 var abi = fs.readFileSync("./WaterContract.json", {
   encoding: "utf8",
