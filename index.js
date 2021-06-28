@@ -21,15 +21,12 @@ abi = abi["abi"];
 
 var address = process.env.WALLET_ADDRESS;
 const contractAddress = process.env.WATER_CONTRACT_ADDRESS;
-const privateKey1 = Buffer.from(
-  process.env.PRIVATE_KEY,
-  "hex"
-);
+const privateKey1 = Buffer.from(process.env.PRIVATE_KEY, "hex");
 
 waterInstance = new web3.eth.Contract(abi, address);
 console.log(waterInstance.methods);
 
-const contract = new web3.eth.Contract(abi, contractAddress);
+contract = new web3.eth.Contract(abi, contractAddress);
 
 web3.eth.getTransactionCount(address, (err, txCount) => {
   const txObject = {
@@ -37,10 +34,12 @@ web3.eth.getTransactionCount(address, (err, txCount) => {
     gasLimit: web3.utils.toHex(800000), // Raise the gas limit to a much higher amount
     gasPrice: web3.utils.toHex(web3.utils.toWei("10", "gwei")),
     to: contractAddress,
-    data: contract.methods.triggerWatering(20, process.env.DAO_REGISTRY).encodeABI(),
+    data: contract.methods
+      .triggerWatering(20, process.env.DAO_REGISTRY)
+      .encodeABI(),
   };
 
-  const tx = new Tx(txObject, {chain:'rinkeby'});
+  const tx = new Tx(txObject, { chain: "rinkeby" });
   tx.sign(privateKey1);
 
   const serializedTx = tx.serialize();
@@ -50,3 +49,12 @@ web3.eth.getTransactionCount(address, (err, txCount) => {
     console.log("err:", err, "txHash:", txHash);
   });
 });
+
+console.log(contract.methods);
+contract.methods
+  .getHumidity()
+  .call({ from: address })
+  .then(function (error, result) {
+    console.log(result);
+    console.log(error);
+  });
