@@ -13,7 +13,6 @@ var abi = fs.readFileSync("./WaterContract.json", {
   flag: "r",
 });
 abi = JSON.parse(abi);
-abi = abi["abi"];
 
 var address = process.env.WALLET_ADDRESS;
 const contractAddress = process.env.WATER_CONTRACT_ADDRESS;
@@ -72,7 +71,7 @@ contract = new web3.eth.Contract(abi, contractAddress);
 
 console.log(contract.methods);
 contract.methods
-  .getHumidity()
+  .getIrrigation()
   .call({ from: address })
   .then(function (error, result) {
     console.log(result);
