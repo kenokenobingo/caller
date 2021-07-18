@@ -23,51 +23,45 @@ console.log(waterInstance.methods);
 
 contract = new web3.eth.Contract(abi, contractAddress);
 
-(async () => {
-  web3.eth.getTransactionCount(address, (err, txCount) => {
-    const txObject = {
-      nonce: web3.utils.toHex(txCount),
-      gasLimit: web3.utils.toHex(800000), // Raise the gas limit to a much higher amount
-      gasPrice: web3.utils.toHex(web3.utils.toWei("10", "gwei")),
-      to: contractAddress,
-      data: contract.methods
-        .triggerWatering(20, process.env.DAO_REGISTRY)
-        .encodeABI(),
-    };
-
-    const tx = new Tx(txObject, { chain: "rinkeby" });
-    tx.sign(privateKey1);
-
-    const serializedTx = tx.serialize();
-    const raw = "0x" + serializedTx.toString("hex");
-
-    web3.eth.sendSignedTransaction(raw, (err, txHash) => {
-      console.log("err:", err, "txHash:", txHash);
-    });
-  });
-
-  delay(20000);
-
-  const txObject_back = {
+web3.eth.getTransactionCount(address, (err, txCount) => {
+  const txObject = {
     nonce: web3.utils.toHex(txCount),
     gasLimit: web3.utils.toHex(800000), // Raise the gas limit to a much higher amount
     gasPrice: web3.utils.toHex(web3.utils.toWei("10", "gwei")),
     to: contractAddress,
     data: contract.methods
-      .stopWatering(20, process.env.DAO_REGISTRY)
+      .triggerWatering(20, process.env.DAO_REGISTRY)
       .encodeABI(),
   };
 
-  const tx_back = new Tx(txObject_back, { chain: "rinkeby" });
-  tx_back.sign(privateKey1);
+  const tx = new Tx(txObject, { chain: "rinkeby" });
+  tx.sign(privateKey1);
 
-  const serializedTx_back = tx_back.serialize();
-  const raw_back = "0x" + serializedTx_back.toString("hex");
+  const serializedTx = tx.serialize();
+  const raw = "0x" + serializedTx.toString("hex");
 
-  web3.eth.sendSignedTransaction(raw_back, (err, txHash) => {
+  web3.eth.sendSignedTransaction(raw, (err, txHash) => {
     console.log("err:", err, "txHash:", txHash);
   });
-})();
+});
+
+const txObject_back = {
+  nonce: web3.utils.toHex(txCount),
+  gasLimit: web3.utils.toHex(800000), // Raise the gas limit to a much higher amount
+  gasPrice: web3.utils.toHex(web3.utils.toWei("10", "gwei")),
+  to: contractAddress,
+  data: contract.methods.stopWatering(20, process.env.DAO_REGISTRY).encodeABI(),
+};
+
+const tx_back = new Tx(txObject_back, { chain: "rinkeby" });
+tx_back.sign(privateKey1);
+
+const serializedTx_back = tx_back.serialize();
+const raw_back = "0x" + serializedTx_back.toString("hex");
+
+web3.eth.sendSignedTransaction(raw_back, (err, txHash) => {
+  console.log("err:", err, "txHash:", txHash);
+});
 
 console.log(contract.methods);
 contract.methods
