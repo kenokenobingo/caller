@@ -46,7 +46,7 @@ contract = new web3.eth.Contract(abi, contractAddress);
     });
   });
 
-  await delay(20000);
+  await delay(5000);
 
   web3.eth.getTransactionCount(address, (err, txCount) => {
     const txObject_back = {
