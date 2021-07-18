@@ -27,7 +27,7 @@ contract = new web3.eth.Contract(abi, contractAddress);
   web3.eth.getTransactionCount(address, (err, txCount) => {
     const txObject = {
       nonce: web3.utils.toHex(txCount),
-      gasLimit: web3.utils.toHex(800000), // Raise the gas limit to a much higher amount
+      gasLimit: web3.utils.toHex(8000000), // Raise the gas limit to a much higher amount
       gasPrice: web3.utils.toHex(web3.utils.toWei("10", "gwei")),
       to: contractAddress,
       data: contract.methods
@@ -51,7 +51,7 @@ contract = new web3.eth.Contract(abi, contractAddress);
   web3.eth.getTransactionCount(address, (err, txCount) => {
     const txObject_back = {
       nonce: web3.utils.toHex(txCount),
-      gasLimit: web3.utils.toHex(800000), // Raise the gas limit to a much higher amount
+      gasLimit: web3.utils.toHex(8000000), // Raise the gas limit to a much higher amount
       gasPrice: web3.utils.toHex(web3.utils.toWei("10", "gwei")),
       to: contractAddress,
       data: contract.methods
